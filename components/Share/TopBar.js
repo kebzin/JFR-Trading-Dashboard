@@ -7,6 +7,16 @@ import { Menu, Moon, Package2, Sun } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Card, CardContent } from "../ui/card";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
+import profilePicture from "../../public/profilePhoto.png";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 function Topbar() {
   const { theme, setTheme } = useTheme();
@@ -14,6 +24,21 @@ function Topbar() {
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
   };
+
+  const supabase = createClientComponentClient();
+  // logout function
+  const logout = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error(error);
+        return;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <Card className="fixed top-0 z-30  w-full h-20 ">
       <CardContent>
@@ -86,10 +111,27 @@ function Topbar() {
               {theme === "dark" ? <Sun /> : <Moon />}
             </Button>
 
-            <Avatar>
-              <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Button variant="outline" size="icon" className="rounded-full">
+                  <Image
+                    src={profilePicture}
+                    height={36}
+                    width={36}
+                    alt="Avatar"
+                    className="overflow-hidden rounded-full"
+                  />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>Settings</DropdownMenuItem>
+                <DropdownMenuItem>Support</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </nav>
       </CardContent>
