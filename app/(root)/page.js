@@ -1,11 +1,11 @@
 import TotalRevenue from "@/components/dashboard/TotalRevenue";
-import TopSales from "@/components/dashboard/TopSales";
 import Salse from "@/components/dashboard/Salse";
 import NumberOfUsers from "@/components/dashboard/NumberOfUsers";
 import RecentTransaction from "@/components/dashboard/RecentTransaction";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import RecentLastOrder from "@/components/dashboard/RecentLastOrder";
+import UnConfirmUsers from "@/components/dashboard/TopSales";
 
 const Dashboard = () => {
   return (
@@ -21,7 +21,7 @@ const Dashboard = () => {
           <Suspense
             fallback={<Skeleton className="h-[125px] w-[250px] rounded-xl" />}
           >
-            <TopSales />
+            <UnConfirmUsers />
           </Suspense>
           <Suspense
             fallback={<Skeleton className="h-[125px] w-[250px] rounded-xl" />}
