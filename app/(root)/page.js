@@ -50,7 +50,11 @@ const Dashboard = () => {
             <RecentTransaction />
           </Suspense>
 
-          <RecentLastOrder />
+          <Suspense
+            fallback={<Skeleton className="h-[500px] w-[350px] rounded-xl" />}
+          >
+            <RecentLastOrder />
+          </Suspense>
         </div>
       </main>
     </div>

@@ -47,6 +47,7 @@ import {
 } from "@/libs/superbase/serverAction/userServerAction";
 import { startTransition, useState } from "react";
 import { Badge } from "../ui/badge";
+import { convertToReadableDate } from "@/lib/utils";
 
 export const invoices = [
   {
@@ -202,9 +203,9 @@ export function UserDataTable({ users }) {
             </Button>
           </div>
           <div>
-            <Button variant="secondary">
+            {/* <Button variant="secondary">
               <AddUser lable="Add user" />
-            </Button>
+            </Button> */}
           </div>
         </div>
       </div>
@@ -215,7 +216,7 @@ export function UserDataTable({ users }) {
             <TableHeader>
               <TableRow>
                 <TableHead className="w-[100px]">User</TableHead>
-                <TableHead>Register by</TableHead>
+
                 <TableHead>Register date</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Role</TableHead>
@@ -242,8 +243,10 @@ export function UserDataTable({ users }) {
                       </p>
                     </div>
                   </TableCell>
-                  <TableCell>{user?.creatAt}</TableCell>
-                  <TableCell>{user?.created_at}</TableCell>
+
+                  <TableCell>
+                    {convertToReadableDate(user?.created_at)}
+                  </TableCell>
                   <TableCell>
                     <Badge
                       className={`${

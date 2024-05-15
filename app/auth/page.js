@@ -14,6 +14,7 @@ import { SupabaseClient } from "@supabase/supabase-js";
 import { CheckCircle, FileTerminal, LoaderIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -27,6 +28,7 @@ export default function AuthenticationPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const supabase = createClientComponentClient();
+  const router = useRouter();
 
   // login function
   const login = async () => {
@@ -54,6 +56,7 @@ export default function AuthenticationPage() {
         icon: <CheckCircle className=" text-primary" />,
       });
       setLoading(false);
+      router.refresh();
     } catch (error) {
       toast("Login Error", {
         description: error.message,

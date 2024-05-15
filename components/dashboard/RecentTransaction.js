@@ -19,10 +19,19 @@ import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { GetLatestFiveRecentOrder } from "@/libs/superbase/serverAction/OrderServerAction";
+import {
+  DetermingOrderStatus,
+  convertToReadableDate,
+  formatCurrency,
+} from "@/lib/utils";
 
 const RecentTransaction = async () => {
-  const result = await GetLatestFiveRecentOrder();
-  console.log(result);
+  const result = await GetLatestFiveRecentOrder({
+    limit: 10,
+    start: 1,
+    end: 10,
+  });
+  // console.log(result);
   return (
     <Card className="xl:col-span-2" x-chunk="dashboard-01-chunk-4">
       <CardHeader className="flex flex-row items-center">
@@ -44,105 +53,40 @@ const RecentTransaction = async () => {
           <TableHeader>
             <TableRow>
               <TableHead>Customer</TableHead>
-              <TableHead className="hidden xl:table-column">Type</TableHead>
-              <TableHead className="hidden xl:table-column">Status</TableHead>
-              <TableHead className="hidden xl:table-column">Date</TableHead>
+              <TableHead className="">Type</TableHead>
+              <TableHead className="">Status</TableHead>
+              <TableHead className="">Date</TableHead>
               <TableHead className="text-right">Amount</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell>
-                <div className="font-medium">Liam Johnson</div>
-                <div className="hidden text-sm text-muted-foreground md:inline">
-                  liam@example.com
-                </div>
-              </TableCell>
-              <TableCell className="hidden xl:table-column">Sale</TableCell>
-              <TableCell className="hidden xl:table-column">
-                <Badge className="text-xs" variant="outline">
-                  Approved
-                </Badge>
-              </TableCell>
-              <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                2023-06-23
-              </TableCell>
-              <TableCell className="text-right">$250.00</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>
-                <div className="font-medium">Olivia Smith</div>
-                <div className="hidden text-sm text-muted-foreground md:inline">
-                  olivia@example.com
-                </div>
-              </TableCell>
-              <TableCell className="hidden xl:table-column">Refund</TableCell>
-              <TableCell className="hidden xl:table-column">
-                <Badge className="text-xs" variant="outline">
-                  Declined
-                </Badge>
-              </TableCell>
-              <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                2023-06-24
-              </TableCell>
-              <TableCell className="text-right">$150.00</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>
-                <div className="font-medium">Noah Williams</div>
-                <div className="hidden text-sm text-muted-foreground md:inline">
-                  noah@example.com
-                </div>
-              </TableCell>
-              <TableCell className="hidden xl:table-column">
-                Number of productw
-              </TableCell>
-              <TableCell className="hidden xl:table-column">
-                <Badge className="text-xs" variant="outline">
-                  Approved
-                </Badge>
-              </TableCell>
-              <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                2023-06-25
-              </TableCell>
-              <TableCell className="text-right">$350.00</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>
-                <div className="font-medium">Emma Brown</div>
-                <div className="hidden text-sm text-muted-foreground md:inline">
-                  emma@example.com
-                </div>
-              </TableCell>
-              <TableCell className="hidden xl:table-column">Sale</TableCell>
-              <TableCell className="hidden xl:table-column">
-                <Badge className="text-xs" variant="outline">
-                  Approved
-                </Badge>
-              </TableCell>
-              <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                2023-06-26
-              </TableCell>
-              <TableCell className="text-right">$450.00</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>
-                <div className="font-medium">Liam Johnson</div>
-                <div className="hidden text-sm text-muted-foreground md:inline">
-                  liam@example.com
-                </div>
-              </TableCell>
-              <TableCell className="hidden xl:table-column">Sale</TableCell>
-              <TableCell className="hidden xl:table-column">
-                <Badge className="text-xs" variant="outline">
-                  Approved
-                </Badge>
-              </TableCell>
-              <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                2023-06-27
-              </TableCell>
-              <TableCell className="text-right">$550.00</TableCell>
-            </TableRow>
+            {result?.map((item) => {
+              return (
+                <TableRow className="cursor-pointer" key={item?.id}>
+                  <TableCell>
+                    <div className="font-medium">
+                      {item?.users?.first_name + " " + item?.users?.last_name}
+                    </div>
+                    <div className=" text-sm text-muted-foreground md:inline">
+                      {item?.users?.phone_number}
+                    </div>
+                  </TableCell>
+                  <TableCell className="">Sale</TableCell>
+                  <TableCell className="">
+                    <Badge className="text-xs" variant="outline">
+                      {DetermingOrderStatus(item?.status)}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className=" md:table-cell ">
+                    {convertToReadableDate(item?.created_at)}
+                    {/* {item?.created_at} */}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    {formatCurrency(item?.Total)}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </CardContent>

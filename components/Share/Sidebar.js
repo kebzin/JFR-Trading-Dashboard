@@ -74,7 +74,7 @@ const SideBar = () => {
                 href={item.route}
                 className={`flex items-center gap-2 rounded-lg  ${
                   isActive && "bg-primary"
-                } px-2 py-2 text-muted-foreground transition-all`}
+                } px-2 py-2  transition-all`}
               >
                 {item.imgURL}
                 {item.label}
