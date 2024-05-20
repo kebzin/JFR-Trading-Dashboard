@@ -37,6 +37,8 @@ import {
 } from "../ui/alert-dialog";
 import { toast } from "sonner";
 import { DeleteProduct } from "@/libs/superbase/serverAction/getProduct";
+import { convertToReadableDate } from "@/lib/utils";
+import ProductAction from "./ProductAction";
 
 const ProductComponentTable = ({ data }) => {
   const deleteSinglProduct = async (id) => {
@@ -84,9 +86,7 @@ const ProductComponentTable = ({ data }) => {
           <TableHead className=" md:table-cell">Quantity</TableHead>
 
           <TableHead className=" md:table-cell">Created at</TableHead>
-          <TableHead>
-            <span className="sr-only">Actions</span>
-          </TableHead>
+          <TableHead>Action</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -117,46 +117,10 @@ const ProductComponentTable = ({ data }) => {
               <TableCell className=" md:table-cell">{item?.quantity}</TableCell>
 
               <TableCell className=" md:table-cell">
-                {item?.created_at}
+                {convertToReadableDate(item?.created_at)}
               </TableCell>
               <TableCell>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button aria-haspopup="true" size="icon" variant="ghost">
-                      <MoreHorizontal className="h-4 w-4" />
-                      <span className="sr-only">Toggle menu</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                    <DropdownMenuItem>Edit</DropdownMenuItem>
-                    <AlertDialog>
-                      <AlertDialogTrigger className="bg-destructive/50 py-2 px-2 rounded-md text-white">
-                        Delete
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>
-                            Are you absolutely sure?
-                          </AlertDialogTitle>
-                          <AlertDialogDescription>
-                            This action cannot be undone. This will permanently
-                            delete your account and remove your data from our
-                            servers.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction
-                            onClick={() => deleteSinglProduct(item.id)}
-                          >
-                            Continue
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>{" "}
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                <ProductAction item={item} />
               </TableCell>
             </TableRow>
           </>

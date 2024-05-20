@@ -21,14 +21,6 @@ import {
   PaginationContent,
   PaginationItem,
 } from "../ui/pagination";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
 import { GetLatestFiveRecentOrder } from "@/libs/superbase/serverAction/OrderServerAction";
 import {
   DetermingOrderStatus,
@@ -113,7 +105,7 @@ const RecentLastOrder = async () => {
             <div className="font-semibold">Shipping Information</div>
             <address className="grid gap-0.5 not-italic text-muted-foreground">
               <span>Gambia</span>
-              <span>{result[0]?.users?.location}</span>
+              <span>{result[0]?.user?.location}</span>
             </address>
           </div>
           <div className="grid auto-rows-max gap-3">
@@ -130,21 +122,19 @@ const RecentLastOrder = async () => {
             <div className="flex items-center justify-between">
               <dt className="text-muted-foreground">Customer</dt>
               <dd>
-                {result[0]?.users?.first_name +
-                  " " +
-                  result[0]?.users?.last_name}
+                {result[0]?.user?.first_name + " " + result[0]?.user?.last_name}
               </dd>
             </div>
             <div className="flex items-center justify-between">
               <dt className="text-muted-foreground">Phone</dt>
               <dd>
-                <a href="tel:">{result[0]?.users?.phone_number}</a>
+                <a href="tel:">{result[0]?.user?.phone_number}</a>
               </dd>
             </div>
             <div className="flex items-center justify-between gap-5">
               <dt className="text-muted-foreground">Location</dt>
               <dd>
-                <a href="mailto:">{result[0]?.users?.location}</a>
+                <a href="mailto:">{result[0]?.user?.location}</a>
               </dd>
             </div>
           </dl>

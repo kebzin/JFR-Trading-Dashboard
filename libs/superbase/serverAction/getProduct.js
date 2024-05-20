@@ -9,6 +9,25 @@ export const GetAllProduct = async () => {
   const cookieStore = cookies();
   const supabase = createServerComponentClient({ cookies: () => cookieStore });
   try {
+    // First, get the authenticated user
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError) {
+      console.log(userError);
+      return userError;
+    }
+
+    // Then, get the session data
+    const { data: session, error: sessionError } =
+      await supabase.auth.getSession();
+
+    if (sessionError) {
+      console.log(sessionError);
+      return sessionError;
+    }
     const { data, error } = await supabase.from("products").select();
 
     if (error) {
@@ -26,6 +45,25 @@ export const DeleteProduct = async ({ id }) => {
   const cookieStore = cookies();
   const supabase = createServerComponentClient({ cookies: () => cookieStore });
   try {
+    // First, get the authenticated user
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError) {
+      console.log(userError);
+      return userError;
+    }
+
+    // Then, get the session data
+    const { data: session, error: sessionError } =
+      await supabase.auth.getSession();
+
+    if (sessionError) {
+      console.log(sessionError);
+      return sessionError;
+    }
     const { data, error } = await supabase
       .from("products")
       .delete()
@@ -37,34 +75,49 @@ export const DeleteProduct = async ({ id }) => {
       console.log(error);
       return error;
     }
+
     console.log(error);
     // revalidate the product path
     revalidatePath("/product");
-    return data;
+    return true;
   } catch (error) {
     console.log(error);
   }
 };
 // update single product
 
-export const UpdateProduct = async (req, res, next) => {
+export const UpdateProduct = async ({ product }) => {
   const cookieStore = cookies();
   const supabase = createServerComponentClient({ cookies: () => cookieStore });
-  const { id } = req.query;
   try {
+    // First, get the authenticated user
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError) {
+      console.log(userError);
+      return userError;
+    }
+
+    // Then, get the session data
+    const { data: session, error: sessionError } =
+      await supabase.auth.getSession();
+
+    if (sessionError) {
+      console.log(sessionError);
+      return sessionError;
+    }
     const { data, error } = await supabase
       .from("products")
-      .update({
-        name: req.body.name,
-        description: req.body.description,
-        price: req.body.price,
-      })
-      .eq("id", id);
+      .update({ product })
+      .eq("id", product.id);
 
     if (error) {
       return error;
     }
-    return NextResponse.redirect("/");
+    return NextResponse.redirect("/product");
   } catch (error) {
     console.log(error);
   }

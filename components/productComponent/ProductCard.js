@@ -9,18 +9,18 @@ const ProductCard = ({ data }) => {
       <div className="mt-3 container">
         {/* map through the data */}
         <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
-          {data.map((item, index) => (
+          {data?.map((item, index) => (
             <Card key={index} className="transition-all">
               <CardContent>
                 <Image
                   src={item?.product_image}
-                  alt={item.name}
+                  alt={item?.name}
                   className="rounded-lg h-40 w-40"
                   width={100}
                   height={100}
                 />
                 <CardTitle className="text-sm font-semibold">
-                  {item.name}
+                  {item?.name}
                 </CardTitle>
                 <div className="flex items-center flex-wrap justify-between">
                   <CardDescription>
