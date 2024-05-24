@@ -28,45 +28,45 @@ import { Button } from "../ui/button";
 //   TooltipTrigger,
 // } from "../ui/tooltip";
 
+export const sidebarLinks = [
+  {
+    imgURL: <LayoutDashboardIcon />,
+    route: "/",
+    label: "Dashboard",
+  },
+  {
+    imgURL: <User2 />,
+    route: "/staff",
+    label: "Staff",
+  },
+  {
+    imgURL: <Users2 />,
+    route: "/customer",
+    label: "Customer",
+  },
+
+  {
+    imgURL: <ShoppingCartIcon />,
+    route: "/orders",
+    label: "Orders",
+  },
+  {
+    imgURL: <ShoppingBagIcon />,
+    route: "/product",
+    label: "Products",
+  },
+  {
+    imgURL: <MapPinned />,
+    route: "/tracking",
+    label: "Track",
+  },
+];
+
 const SideBar = () => {
   const router = useRouter();
   const pathname = usePathname();
 
   // const { userId } = useAuth();
-
-  const sidebarLinks = [
-    {
-      imgURL: <LayoutDashboardIcon />,
-      route: "/",
-      label: "Dashboard",
-    },
-    {
-      imgURL: <User2 />,
-      route: "/staff",
-      label: "Staff",
-    },
-    {
-      imgURL: <Users2 />,
-      route: "/customer",
-      label: "Customer",
-    },
-
-    {
-      imgURL: <ShoppingCartIcon />,
-      route: "/orders",
-      label: "Orders",
-    },
-    {
-      imgURL: <ShoppingBagIcon />,
-      route: "/product",
-      label: "Products",
-    },
-    {
-      imgURL: <MapPinned />,
-      route: "/tracking",
-      label: "Track",
-    },
-  ];
 
   return (
     <aside className="fixed top-24 bottom-0 left-0  z-10 hidden  flex-col border-r bg-background  sm:flex">

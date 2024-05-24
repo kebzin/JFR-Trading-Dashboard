@@ -9,64 +9,15 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { SupabaseClient } from "@supabase/supabase-js";
-import { CheckCircle, FileTerminal, LoaderIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { toast } from "sonner";
-
-// export const metadata = {
-//   title: "Authentication",
-//   description: "Authentication forms built using the components.",
-// };
+import { LoaderIcon } from "lucide-react";
+import { useLoginAuth } from "@/hook/AuthHook";
 
 export default function AuthenticationPage() {
-  const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const supabase = createClientComponentClient();
-  const router = useRouter();
+  const { email, setEmail, password, setPassword, loading, login } =
+    useLoginAuth();
 
-  // login function
-  const login = async () => {
-    setLoading(true);
-    toast("Login in process", {
-      description: "Sigining you to your account",
-      icon: <LoaderIcon className="animate-spin text-pretty" />,
-    });
-
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      if (error) {
-        toast(error.name, {
-          description: error.message,
-          icon: <FileTerminal className=" text-destructive" />,
-        });
-        setLoading(false);
-        return;
-      }
-      toast("Login in complete", {
-        description: "sigining complete",
-        icon: <CheckCircle className=" text-primary" />,
-      });
-      setLoading(false);
-      router.refresh();
-    } catch (error) {
-      toast("Login Error", {
-        description: error.message,
-        icon: <FileTerminal className=" text-destructive" />,
-      });
-      setLoading(false);
-
-      // redirect the user back to where thy are comming from
-    }
-  };
   return (
     <>
       <div className="flex flex-col justify-center h-screen">
@@ -115,7 +66,7 @@ export default function AuthenticationPage() {
                 type="submit"
                 className="w-full flex items-center gap-3"
               >
-                {loading && <LoaderIcon className="animate-spin " />}
+                {loading && <LoaderIcon className="animate-spin" />}
                 Login
               </Button>
             </div>

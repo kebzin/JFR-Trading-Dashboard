@@ -368,4 +368,37 @@ export const GetUsers = async ({ user_role }) => {
   }
 };
 
-// get all the users base on the provided argument
+// get single user
+
+export const getSingleUser = async (id) => {
+  const cookieStore = cookies();
+  const supabase = createServerComponentClient({ cookies: () => cookieStore });
+  try {
+    // First, get the authenticated user
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+    if (userError) {
+      console.log(userError);
+      return userError;
+    }
+    // Then, get the session data
+    const { data: session, error: sessionError } =
+      await supabase.auth.getSession();
+    if (sessionError) {
+      console.log(sessionError);
+      return sessionError;
+    }
+    const { data: customers, error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("id", id);
+    if (error) {
+      return error;
+    }
+    return customers;
+  } catch (error) {
+    return error;
+  }
+};
