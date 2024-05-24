@@ -2,6 +2,7 @@ import Image from "next/image";
 import React from "react";
 import { Card, CardContent, CardDescription, CardTitle } from "../ui/card";
 import { formatCurrency } from "@/lib/utils";
+import { Button } from "../ui/button";
 
 const ProductCard = ({ data }) => {
   return (
@@ -19,25 +20,29 @@ const ProductCard = ({ data }) => {
                   width={100}
                   height={100}
                 />
-                <CardTitle className="text-sm font-semibold">
+                <CardTitle className="text-sm font-semibold text-pretty">
                   {item?.name}
                 </CardTitle>
                 <div className="flex items-center flex-wrap justify-between">
-                  <CardDescription>
+                  <p className="text-pretty mt-2">
                     {formatCurrency(item?.price)}
-                  </CardDescription>
+                  </p>
                   <CardDescription>
-                    {" "}
                     <span>Category :</span> {item?.category}
                   </CardDescription>
                 </div>
                 <div className="flex items-center justify-between">
                   <CardDescription className="">
-                    <span>Discount </span> {item?.discount}
+                    <span>Discount </span>
+                    <Button size="icon" variant="outline" className="">
+                      {item?.discount}%
+                    </Button>
                   </CardDescription>
                   <CardDescription>
                     <span>Quantity</span>
-                    {item?.quantity}
+                    <Button size="icon" variant="outline" className="">
+                      {item?.quantity}
+                    </Button>
                   </CardDescription>
                 </div>
 

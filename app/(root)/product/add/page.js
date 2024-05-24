@@ -28,21 +28,7 @@ const AddProduct = () => {
   const [productCategory, setProductCategory] = useState("");
   const [productDiscount, setProductDiscount] = useState("2");
   const supabase = createClientComponentClient();
-
   const router = useRouter();
-  const [item, setItem] = useState(null);
-  console.log(item);
-
-  useEffect(() => {
-    const { query } = router;
-    if (query?.item) {
-      try {
-        setItem(query?.item);
-      } catch (error) {
-        console.error("Failed to parse item from query:", error);
-      }
-    }
-  }, [router]);
 
   //   // Function to get the user's session
   //   async function getSessionData() {

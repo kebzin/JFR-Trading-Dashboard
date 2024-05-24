@@ -28,8 +28,10 @@ export const GetAllProduct = async () => {
       console.log(sessionError);
       return sessionError;
     }
-    const { data, error } = await supabase.from("products").select();
-
+    const { data, error } = await supabase
+      .from("products")
+      .select()
+      .order("created_at", { ascending: false, nullsFirst: false });
     if (error) {
       return error;
     }
@@ -44,81 +46,75 @@ export const GetAllProduct = async () => {
 export const DeleteProduct = async ({ id }) => {
   const cookieStore = cookies();
   const supabase = createServerComponentClient({ cookies: () => cookieStore });
+
   try {
     // First, get the authenticated user
     const {
       data: { user },
       error: userError,
     } = await supabase.auth.getUser();
-
     if (userError) {
       console.log(userError);
       return userError;
     }
-
     // Then, get the session data
     const { data: session, error: sessionError } =
       await supabase.auth.getSession();
-
     if (sessionError) {
       console.log(sessionError);
       return sessionError;
     }
-    const { data, error } = await supabase
-      .from("products")
-      .delete()
-      .eq("id", id);
-    // also delete image
-    // await supabase.storage.from("product-images").remove(filePath);
-
+    const { error } = await supabase.from("products").delete().eq("id", id);
     if (error) {
       console.log(error);
       return error;
     }
-
-    console.log(error);
-    // revalidate the product path
     revalidatePath("/product");
     return true;
   } catch (error) {
     console.log(error);
+    return error;
   }
 };
-// update single product
 
-export const UpdateProduct = async ({ product }) => {
+// update single product
+export const UpdateProduct = async ({ id, data }) => {
   const cookieStore = cookies();
   const supabase = createServerComponentClient({ cookies: () => cookieStore });
   try {
     // First, get the authenticated user
-    const {
-      data: { user },
-      error: userError,
-    } = await supabase.auth.getUser();
+    const { error: userError } = await supabase.auth.getUser();
 
     if (userError) {
-      console.log(userError);
+      console.log("User Error:", userError);
       return userError;
     }
 
     // Then, get the session data
-    const { data: session, error: sessionError } =
-      await supabase.auth.getSession();
+    const { error: sessionError } = await supabase.auth.getSession();
 
     if (sessionError) {
-      console.log(sessionError);
+      console.log("Session Error:", sessionError);
       return sessionError;
     }
-    const { data, error } = await supabase
-      .from("products")
-      .update({ product })
-      .eq("id", product.id);
 
-    if (error) {
-      return error;
+    const { data: response, error: updateError } = await supabase
+      .from("products")
+      .update(data)
+      .eq("id", id)
+      .select("*");
+
+    if (updateError) {
+      console.log("Update Error:", updateError);
+      return updateError;
     }
-    return NextResponse.redirect("/product");
+
+    revalidatePath("/product");
+    return true;
   } catch (error) {
-    console.log(error);
+    console.log("Catch Error:", error);
+    return error;
   }
 };
+
+// delete single product

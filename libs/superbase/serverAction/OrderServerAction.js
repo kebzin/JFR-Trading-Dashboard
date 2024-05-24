@@ -157,12 +157,17 @@ export const EditOrder = async ({ id, data }) => {
       console.log(sessionError);
       return sessionError;
     }
-    const { error } = await supabase.from("order").update(data).eq("id", id);
+    const { error } = await supabase
+      .from("order")
+      .update(data)
+      .eq("id", id)
+      .select("*");
 
     if (error) {
       console.log(error);
       return error;
     }
+
     revalidatePath("/orders");
     return true;
   } catch (error) {

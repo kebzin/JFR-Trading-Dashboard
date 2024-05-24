@@ -13,7 +13,7 @@ import { Input } from "../ui/input";
 import { Toggle } from "../ui/toggle";
 
 const AddProductImages = ({ images, setImages }) => {
-  const [imageUrl, setImageUrl] = useState();
+  const [imageUrl, setImageUrl] = useState(images);
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     const fileUrl = URL.createObjectURL(file);

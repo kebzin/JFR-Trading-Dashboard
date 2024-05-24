@@ -19,14 +19,12 @@ import {
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
+import { EditProduct } from "./EditProduct";
+import useProduct from "@/hook/useProduct";
+import { LoaderIcon } from "lucide-react";
 
 const ProductAction = ({ item }) => {
-  const router = useRouter();
-  const handleEdit = () => {
-    router.push("/product/add", {
-      query: item, // Pass the serialized object
-    });
-  };
+  const { DeleteProductFromStore, loading } = useProduct();
 
   return (
     <DropdownMenu>
@@ -41,7 +39,7 @@ const ProductAction = ({ item }) => {
           <AlertDialogTrigger asChild>
             <Button variant="destructive" className="w-full">
               Delete
-              {/* {loading && <LoaderIcon className="animate-spin" />} */}
+              {loading && <LoaderIcon className="animate-spin" />}
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
@@ -55,40 +53,18 @@ const ProductAction = ({ item }) => {
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction>
+              <AlertDialogAction
+                onClick={() => DeleteProductFromStore({ id: item.id })}
+              >
                 Continue
-                {/* {loading && <LoaderIcon className="animate-spin" />} */}
+                {loading && <LoaderIcon className="animate-spin" />}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
         <DropdownMenuSeparator />
         <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button variant="outline" className="w-full">
-              Edit
-              {/* {loading && <LoaderIcon className="animate-spin" />} */}
-            </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>
-                You are about to edit this Product
-              </AlertDialogTitle>
-              <AlertDialogDescription>
-                Please note that if a user has already ordered this product, any
-                price changes made before the delivery is completed will not
-                affect their original order price{" "}
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={handleEdit}>
-                Continue
-                {/* {loading && <LoaderIcon className="animate-spin" />} */}
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
+          <EditProduct item={item} />
         </AlertDialog>
       </DropdownMenuContent>
     </DropdownMenu>

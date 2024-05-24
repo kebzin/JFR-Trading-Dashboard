@@ -14,6 +14,13 @@ import {
   UserCircle2Icon,
   Users2,
 } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
+import { Button } from "../ui/button";
 // import {
 //   Tooltip,
 //   TooltipContent,
@@ -62,8 +69,8 @@ const SideBar = () => {
   ];
 
   return (
-    <aside className="fixed top-24 bottom-0 left-0 z-10 hidden  flex-col border-r bg-background  sm:flex">
-      <nav className="grid items-start  text-sm font-medium lg:px-3 gap-2">
+    <aside className="fixed top-24 bottom-0 left-0  z-10 hidden  flex-col border-r bg-background  sm:flex">
+      <nav className="grid items-start  text-sm font-medium lg:px-1 gap-2">
         {sidebarLinks.map((item) => {
           // const active
           const isActive = pathname === item.route || pathname === item.route;
@@ -72,12 +79,17 @@ const SideBar = () => {
             <>
               <Link
                 href={item.route}
-                className={`flex items-center gap-2 rounded-lg  ${
-                  isActive && "bg-primary"
-                } px-2 py-2  transition-all`}
+                className={`flex items-center gap-2  py-2  transition-all`}
               >
-                {item.imgURL}
-                {item.label}
+                <Button
+                  variant="outline"
+                  className={`w-full flex items-center gap-2 justify-items-center ${
+                    isActive && "bg-primary"
+                  }`}
+                >
+                  {item.imgURL}
+                  {item.label}
+                </Button>
               </Link>
             </>
           );

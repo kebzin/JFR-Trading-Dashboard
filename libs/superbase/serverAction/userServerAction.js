@@ -327,3 +327,45 @@ export const UpdateUSerData = async ({ id, data, staff = false }) => {
     return error;
   }
 };
+
+// get all the users base on the provided argument
+
+export const GetUsers = async ({ user_role }) => {
+  const cookieStore = cookies();
+  const supabase = createServerComponentClient({ cookies: () => cookieStore });
+  try {
+    // First, get the authenticated user
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError) {
+      console.log(userError);
+      return userError;
+    }
+
+    // Then, get the session data
+    const { data: session, error: sessionError } =
+      await supabase.auth.getSession();
+
+    if (sessionError) {
+      console.log(sessionError);
+      return sessionError;
+    }
+    const { data: customers, error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("user_role", user_role)
+      .order("created_at", { ascending: false, nullsFirst: false });
+    if (error) {
+      return error;
+    }
+
+    return customers;
+  } catch (error) {
+    return error;
+  }
+};
+
+// get all the users base on the provided argument

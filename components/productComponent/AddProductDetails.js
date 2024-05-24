@@ -110,7 +110,10 @@ const AddProductDetails = ({
                         id="category"
                         aria-label="Select category"
                       >
-                        <SelectValue placeholder="Select category" />
+                        <SelectValue
+                          value={productCategory}
+                          placeholder={productCategory}
+                        />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem className="b" value="clothing">
@@ -131,7 +134,10 @@ const AddProductDetails = ({
                         id="discount"
                         aria-label="Apply Discount"
                       >
-                        <SelectValue placeholder="Select percentage" />
+                        <SelectValue
+                          value={productDiscount}
+                          placeholder={productDiscount}
+                        />
                       </SelectTrigger>
                       <SelectContent
                       //  selet selected value

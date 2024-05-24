@@ -19,27 +19,13 @@ const useProduct = () => {
       });
       return false;
     }
-    if ("deliver_by" in data && !data.deliver_by) {
-      toast("Validation Error", {
-        description: "Please assign a driver before proceeding.",
-        icon: <FileTerminal className="text-destructive" />,
-      });
-      return false;
-    }
+
     // Add more field-specific validations as needed
-    if ("status" in data && !data.status) {
-      toast("Validation Error", {
-        description: "Please Choosed a status before proceeding.",
-        icon: <FileTerminal className="text-destructive" />,
-      });
-      return false;
-    }
 
     return true;
   };
 
   const EditProductData = async ({ id, data }) => {
-    console.log(data);
     if (!validateData(data)) {
       return;
     }
@@ -51,6 +37,8 @@ const useProduct = () => {
     });
     try {
       const result = await UpdateProduct({ id, data });
+      console.log(result);
+
       if (typeof result === "object") {
         toast(result.errorCode, {
           description: result.errorMessage,

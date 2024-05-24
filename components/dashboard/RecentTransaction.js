@@ -65,10 +65,10 @@ const RecentTransaction = async () => {
                 <TableRow className="cursor-pointer" key={item?.id}>
                   <TableCell>
                     <div className="font-medium">
-                      {item?.users?.first_name + " " + item?.users?.last_name}
+                      {item?.user?.first_name + " " + item?.user?.last_name}
                     </div>
                     <div className=" text-sm text-muted-foreground md:inline">
-                      {item?.users?.phone_number}
+                      {item?.user?.phone_number}
                     </div>
                   </TableCell>
                   <TableCell className="">Sale</TableCell>
