@@ -10,12 +10,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { SupabaseClient } from "@supabase/supabase-js";
 import { CheckCircle, FileTerminal, LoaderIcon } from "lucide-react";
-import Image from "next/image";
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import "../globals.css";
 
 // export const metadata = {
 //   title: "Authentication",
@@ -27,6 +28,7 @@ export default function AuthenticationPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const supabase = createClientComponentClient();
+  const router = useRouter();
 
   // login function
   const login = async () => {
@@ -54,6 +56,8 @@ export default function AuthenticationPage() {
         icon: <CheckCircle className=" text-primary" />,
       });
       setLoading(false);
+      // redirect the user back to where thy are comming from
+      router.refresh();
     } catch (error) {
       toast("Login Error", {
         description: error.message,

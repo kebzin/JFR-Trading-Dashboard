@@ -19,6 +19,7 @@ const ProductCard = ({ data }) => {
                   width={100}
                   height={100}
                 />
+
                 <CardTitle className="text-sm font-semibold">
                   {item.name}
                 </CardTitle>
@@ -27,7 +28,6 @@ const ProductCard = ({ data }) => {
                     {formatCurrency(item?.price)}
                   </CardDescription>
                   <CardDescription>
-                    {" "}
                     <span>Category :</span> {item?.category}
                   </CardDescription>
                 </div>
@@ -36,7 +36,7 @@ const ProductCard = ({ data }) => {
                     <span>Discount </span> {item?.discount}
                   </CardDescription>
                   <CardDescription>
-                    <span>Quantity</span>
+                    <span>Quantity </span>
                     {item?.quantity}
                   </CardDescription>
                 </div>

@@ -129,3 +129,22 @@ export const SuspendUser = async ({ id, data }) => {
     return error;
   }
 };
+
+// get the all the users whose account are not confirm
+// get all unconfirmed users
+export const GetUnconfirmedUsers = async () => {
+  const cookieStore = cookies();
+  const supabase = createServerComponentClient({ cookies: () => cookieStore });
+  try {
+    const { data: unconfirmedUsers, error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("confirm", false);
+    if (error) {
+      return error;
+    }
+    return unconfirmedUsers.length;
+  } catch (error) {
+    return error;
+  }
+};

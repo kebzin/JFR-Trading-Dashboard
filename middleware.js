@@ -19,7 +19,7 @@ export async function middleware(req) {
   //   return res;
   // }
 
-  return res;
+  return NextResponse.rewrite(new URL("/dashboard", req.url));
 }
 
 // config

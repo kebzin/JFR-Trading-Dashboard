@@ -1,10 +1,16 @@
-import { Inter } from "next/font/google";
-import "../globals.css";
-import { Providers } from "@/components/providers/themeProviders";
-import Topbar from "@/components/Share/TopBar";
-import SideBar from "@/components/Share/Sidebar";
-import { Toaster } from "@/components/ui/sonner";
+// import { Inter } from "next/font/google";
+import "./globals.css";
+// import { Providers } from "@/components/providers/themeProviders";
+// import Topbar from "@/components/Share/TopBar";
+// import SideBar from "@/components/Share/Sidebar";
+// import { Toaster } from "@/components/ui/sonner";
 // import { AuthProvider } from "@/components/providers/AuthProvider";
+
+import SideBar from "@/components/Share/Sidebar";
+import Topbar from "@/components/Share/TopBar";
+import { Providers } from "@/components/providers/themeProviders";
+import { Toaster } from "@/components/ui/sonner";
+import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
 
