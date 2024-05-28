@@ -48,12 +48,10 @@ export const useLoginAuth = () => {
         return;
       }
 
-      const checkForUSerRole = await getSingleUser(data.user.id);
-
-      console.log(checkForUSerRole);
+      const checkForUSerRole = await getSingleUser(data.session.user.id);
 
       // only allow user whose user_role is admin. Otherwise log them out
-      if (checkForUSerRole[0].user_role !== "admin") {
+      if (checkForUSerRole[0]?.user_role !== "admin") {
         toast("Login Error", {
           description: "You are not an admin",
           icon: <FileTerminal className="text-destructive" />,

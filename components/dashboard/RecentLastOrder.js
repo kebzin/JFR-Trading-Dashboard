@@ -29,7 +29,7 @@ import {
 } from "@/lib/utils";
 
 const RecentLastOrder = async () => {
-  const result = await GetLatestFiveRecentOrder({ limit: 1, start: 1, end: 1 });
+  const result = await GetLatestFiveRecentOrder({ limit: 1, start: 0, end: 1 });
 
   return (
     <Card className="overflow-hidden" x-chunk="dashboard-05-chunk-4">

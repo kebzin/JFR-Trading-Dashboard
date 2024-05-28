@@ -38,7 +38,6 @@ const useEditOrderData = () => {
   };
 
   const editOrderData = async ({ id, data }) => {
-    console.log(data);
     if (!validateData(data)) {
       return;
     }

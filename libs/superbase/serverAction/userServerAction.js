@@ -394,6 +394,7 @@ export const getSingleUser = async (id) => {
       .from("users")
       .select("*")
       .eq("id", id);
+
     if (error) {
       return error;
     }

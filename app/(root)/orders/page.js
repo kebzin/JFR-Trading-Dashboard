@@ -17,7 +17,7 @@ import RecentLastOrder from "@/components/dashboard/RecentLastOrder";
 const Orders = async () => {
   const result = await GetLatestFiveRecentOrder({
     limit: 10,
-    start: 1,
+    start: 0,
     end: 10,
   });
   return (

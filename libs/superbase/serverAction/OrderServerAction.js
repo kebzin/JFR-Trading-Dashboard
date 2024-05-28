@@ -38,7 +38,6 @@ export async function GetLatestFiveRecentOrder({ limit, start, end }) {
       .limit(limit)
       .order("created_at", { ascending: false, nullsFirst: false })
       .range(start, end);
-
     if (error) {
       console.log(error);
       return error;
