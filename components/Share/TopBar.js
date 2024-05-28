@@ -17,6 +17,8 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { usePathname, useRouter } from "next/navigation";
+import { sidebarLinks } from "./Sidebar";
 
 function Topbar() {
   const { theme, setTheme } = useTheme();
@@ -25,6 +27,9 @@ function Topbar() {
     setTheme(theme === "dark" ? "light" : "dark");
   };
 
+  const pathname = usePathname();
+
+  const router = useRouter();
   const supabase = createClientComponentClient();
   // logout function
   const logout = async () => {
@@ -34,6 +39,10 @@ function Topbar() {
         console.error(error);
         return;
       }
+
+      router.refresh();
+
+      setSession(null);
     } catch (error) {
       console.error(error);
     }
@@ -55,41 +64,32 @@ function Topbar() {
               </Button>
             </SheetTrigger>
             <SheetContent side="left">
-              <nav className="grid gap-6 text-lg font-medium">
-                <Link
-                  href="#"
-                  className="flex items-center gap-2 text-lg font-semibold"
-                >
-                  <Package2 className="h-6 w-6" />
-                  <span className="sr-only">Acme Inc</span>
-                </Link>
-                <Link href="#" className="hover:text-foreground">
-                  Dashboard
-                </Link>
-                <Link
-                  href="#"
-                  className="text-muted-foreground hover:text-foreground"
-                >
-                  Orders
-                </Link>
-                <Link
-                  href="#"
-                  className="text-muted-foreground hover:text-foreground"
-                >
-                  Products
-                </Link>
-                <Link
-                  href="#"
-                  className="text-muted-foreground hover:text-foreground"
-                >
-                  Customers
-                </Link>
-                <Link
-                  href="#"
-                  className="text-muted-foreground hover:text-foreground"
-                >
-                  Analytics
-                </Link>
+              <nav className="grid items-start  text-sm font-medium lg:px-1 gap-2">
+                {sidebarLinks.map((item) => {
+                  // const active
+
+                  const isActive =
+                    pathname === item.route || pathname === item.route;
+
+                  return (
+                    <>
+                      <Link
+                        href={item.route}
+                        className={`flex items-center gap-2  py-2  transition-all`}
+                      >
+                        <Button
+                          variant="outline"
+                          className={`w-full flex items-center gap-2 justify-items-center ${
+                            isActive && "bg-primary"
+                          }`}
+                        >
+                          {item.imgURL}
+                          {item.label}
+                        </Button>
+                      </Link>
+                    </>
+                  );
+                })}
               </nav>
             </SheetContent>
           </Sheet>
@@ -126,8 +126,10 @@ function Topbar() {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => router.push("notification")}>
+                  Notifications
+                </DropdownMenuItem>
                 <DropdownMenuItem>Settings</DropdownMenuItem>
-                <DropdownMenuItem>Support</DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
               </DropdownMenuContent>

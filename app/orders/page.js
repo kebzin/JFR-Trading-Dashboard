@@ -8,14 +8,18 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import { Progress } from "@/components/ui/progress";
-
-import OrderDetails from "@/components/order/OrderDetails";
 import OrderTable from "@/components/order/OrderTable";
 import ThisWeekOrderTotal from "@/components/order/ThisWeekOrderTotal";
 import ThisMonthTotal from "@/components/order/ThisMonthTotal";
+import { GetLatestFiveRecentOrder } from "@/libs/superbase/serverAction/OrderServerAction";
+import RecentLastOrder from "@/components/dashboard/RecentLastOrder";
 
-const Orders = () => {
+const Orders = async () => {
+  const result = await GetLatestFiveRecentOrder({
+    limit: 10,
+    start: 0,
+    end: 10,
+  });
   return (
     <div className="flex min-h-screen w-full flex-col  mt-20">
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
@@ -43,14 +47,13 @@ const Orders = () => {
             </div>
             {/* order table */}
             <Suspense>
-              <OrderTable />
+              <OrderTable order={result} />
             </Suspense>
           </div>
           <div>
             {/* order details */}
             <Suspense>
-              {" "}
-              <OrderDetails />
+              <RecentLastOrder />
             </Suspense>
           </div>
         </main>

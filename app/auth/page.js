@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+<<<<<<< HEAD
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { CheckCircle, FileTerminal, LoaderIcon } from "lucide-react";
 
@@ -68,6 +69,17 @@ export default function AuthenticationPage() {
       // redirect the user back to where thy are comming from
     }
   };
+=======
+import Image from "next/image";
+import Link from "next/link";
+import { LoaderIcon } from "lucide-react";
+import { useLoginAuth } from "@/hook/AuthHook";
+
+export default function AuthenticationPage() {
+  const { email, setEmail, password, setPassword, loading, login } =
+    useLoginAuth();
+
+>>>>>>> 33908d9e0f6126025c59082eb7dc2ba947a8d90b
   return (
     <>
       <div className="flex flex-col justify-center h-screen">
@@ -116,7 +128,7 @@ export default function AuthenticationPage() {
                 type="submit"
                 className="w-full flex items-center gap-3"
               >
-                {loading && <LoaderIcon className="animate-spin " />}
+                {loading && <LoaderIcon className="animate-spin" />}
                 Login
               </Button>
             </div>

@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -11,38 +12,69 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { UpdateUser } from "@/libs/superbase/serverAction/userServerAction";
+import {
+  UpdateUSerData,
+  UpdateUser,
+} from "@/libs/superbase/serverAction/userServerAction";
 import { useState } from "react";
-import { LoaderIcon } from "lucide-react";
+import { CheckCircle, FileTerminal, LoaderIcon } from "lucide-react";
+import { toast } from "sonner";
+import { Select, SelectContent, SelectItem, SelectTrigger } from "../ui/select";
+import { SelectValue } from "@radix-ui/react-select";
 
 const EditUser = ({ user }) => {
   // satate
   const [firstName, setFirstName] = useState(user?.first_name);
   const [lastName, setLastName] = useState(user?.last_name);
   const [phone, setPhone] = useState(user?.phone_number);
-  const [email, setEmail] = useState("");
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
   const [loading, showLoading] = useState(false);
+  const [userRole, setUserRole] = useState(user?.user_role);
+  DialogClose;
 
   // hande form submits
   const handleSubmit = async (e) => {
     showLoading(true);
+    toast("Processsing ", {
+      description: `Processing your request `,
+      icon: <LoaderIcon className="animate-spin text-pretty" />,
+    });
     e.preventDefault();
     const data = {
       first_name: firstName,
       last_name: lastName,
       phone_number: phone,
+      user_role: userRole,
       // email: email,
       // address: address,
       // city: city,
     };
 
+    // check if all properties are valid before sending
+    if (!firstName || !lastName || !phone) {
+      showLoading(false);
+      return;
+    }
+
     try {
       const id = user?.id;
-      const result = await UpdateUser({ id, data });
-      console.log(result);
-      showLoading(false);
+      const result = await UpdateUSerData({ id, data });
+      if (result === true) {
+        showLoading(false);
+        toast("Processing  successfully", {
+          description: `Your request process  successfully`,
+          icon: <CheckCircle className=" text-primary" />,
+        });
+        return;
+      }
+      // if the data return false it mean error
+      else {
+        showLoading(false);
+        toast(result.errorMessage, {
+          description: result.errorMessage,
+          icon: <FileTerminal className="bg-destructive" />,
+        });
+        return;
+      }
     } catch (error) {
     } finally {
       showLoading(false);
@@ -105,6 +137,36 @@ const EditUser = ({ user }) => {
               onChange={(e) => setPhone(e.target.value)}
               required
             />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="Role" className="text-right">
+              USer Role
+            </Label>
+            <Select
+              onValueChange={(event) => {
+                setUserRole(event);
+              }}
+            >
+              <SelectTrigger
+                className="w-full col-span-3"
+                id="role"
+                aria-label="Select role"
+                value={userRole}
+              >
+                <SelectValue
+                  className="w-full"
+                  placeholder={user?.user_role}
+                  value={userRole}
+                />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem className="b" value="Admin">
+                  admin
+                </SelectItem>
+                <SelectItem value="driver">Driver</SelectItem>
+                <SelectItem value="customer">Customer</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
         <DialogFooter>

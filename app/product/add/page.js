@@ -13,9 +13,10 @@ import { Button } from "@/components/ui/button";
 
 import AddProductImages from "@/components/productComponent/AddProductImages";
 import AddProductDetails from "@/components/productComponent/AddProductDetails";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const AddProduct = () => {
   const [isLoading, setIsloading] = useState(false);
@@ -27,8 +28,7 @@ const AddProduct = () => {
   const [productCategory, setProductCategory] = useState("");
   const [productDiscount, setProductDiscount] = useState("2");
   const supabase = createClientComponentClient();
-
-  // current login user
+  const router = useRouter();
 
   //   // Function to get the user's session
   //   async function getSessionData() {
@@ -156,7 +156,12 @@ const AddProduct = () => {
         <main className="grid flex-1 items-start gap-4 p-4  sm:py-0 md:gap-8">
           <div className=" grid  flex-1 auto-rows-max gap-4">
             <div className="flex items-center gap-4">
-              <Button variant="outline" size="icon" className="h-7 w-7">
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-7 w-7"
+                onClick={() => router.back()}
+              >
                 <ChevronLeft className="h-4 w-4" />
                 <span className="sr-only">Back</span>
               </Button>

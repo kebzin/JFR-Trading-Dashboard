@@ -5,6 +5,9 @@ export async function middleware(req) {
   const res = NextResponse.next();
   // Create a Supabase client configured to use cookies
   const supabase = createMiddlewareClient({ req, res });
+  // Get user data
+  const user = await supabase.auth.getUser();
+
   // Refresh session if expired - required for Server Components
   const {
     data: { session },

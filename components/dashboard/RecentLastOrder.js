@@ -21,29 +21,31 @@ import {
   PaginationContent,
   PaginationItem,
 } from "../ui/pagination";
+import { GetLatestFiveRecentOrder } from "@/libs/superbase/serverAction/OrderServerAction";
 import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+  DetermingOrderStatus,
+  convertToReadableDate,
+  formatCurrency,
+} from "@/lib/utils";
 
-const RecentLastOrder = () => {
+const RecentLastOrder = async () => {
+  const result = await GetLatestFiveRecentOrder({ limit: 1, start: 0, end: 1 });
+
   return (
     <Card className="overflow-hidden" x-chunk="dashboard-05-chunk-4">
       <CardHeader className="flex flex-row items-start bg-muted/50">
         <div className="grid gap-0.5">
           <CardTitle className="group flex items-center gap-2 text-lg">
-            Order Oe31b70H
+            #Order {result[0]?.order_number}
             <Button
               size="icon"
               variant="outline"
               className="h-6 w-6 opacity-0 transition-opacity group-hover:opacity-100"
             ></Button>
           </CardTitle>
-          <CardDescription>Date: November 23, 2023</CardDescription>
+          <CardDescription>
+            {convertToReadableDate(result[0]?.created_at)}
+          </CardDescription>
         </div>
         <div className="ml-auto flex items-center gap-1 flex-col">
           <Button size="sm" variant="outline" className="h-8 gap-1">
@@ -58,36 +60,42 @@ const RecentLastOrder = () => {
         <div className="grid gap-3">
           <div className="font-semibold">Order Details</div>
           <ul className="grid gap-3">
-            <li className="flex items-center justify-between">
-              <span className="text-muted-foreground">
-                Glimmer Lamps x <span>2</span>
-              </span>
-              <span>$250.00</span>
-            </li>
-            <li className="flex items-center justify-between">
+            {result[0]?.product?.map((item, index) => {
+              // // console.log(item);
+              // <Button size="icon" variant="outline" className="h-6 w-6">
+              //         {item?.quantity}
+              //       </Button>
+              return (
+                <div key={index}>
+                  <li className="flex items-center justify-between">
+                    <span className="text-muted-foreground">{item?.name}</span>
+                    <span>{formatCurrency(item?.price)}</span>
+                  </li>
+                  <li className="flex items-center justify-between">
+                    <span className="text-muted-foreground">Quantity</span>
+                    <span>{item?.quantity}</span>
+                  </li>
+                </div>
+              );
+            })}
+
+            {/* <li className="flex items-center justify-between">
               <span className="text-muted-foreground">
                 Aqua Filters x <span>1</span>
               </span>
               <span>$49.00</span>
-            </li>
+            </li> */}
           </ul>
           <Separator className="my-2" />
           <ul className="grid gap-3">
             <li className="flex items-center justify-between">
-              <span className="text-muted-foreground">Subtotal</span>
-              <span>$299.00</span>
-            </li>
-            <li className="flex items-center justify-between">
               <span className="text-muted-foreground">Shipping</span>
-              <span>$5.00</span>
+              <span>{formatCurrency(0)}</span>
             </li>
-            <li className="flex items-center justify-between">
-              <span className="text-muted-foreground">Tax</span>
-              <span>$25.00</span>
-            </li>
+
             <li className="flex items-center justify-between font-semibold">
               <span className="text-muted-foreground">Total</span>
-              <span>$329.00</span>
+              <span>{formatCurrency(result[0]?.Total)}</span>
             </li>
           </ul>
         </div>
@@ -96,9 +104,8 @@ const RecentLastOrder = () => {
           <div className="grid gap-3">
             <div className="font-semibold">Shipping Information</div>
             <address className="grid gap-0.5 not-italic text-muted-foreground">
-              <span>Liam Johnson</span>
-              <span>1234 Main St.</span>
-              <span>Anytown, CA 12345</span>
+              <span>Gambia</span>
+              <span>{result[0]?.user?.location}</span>
             </address>
           </div>
           <div className="grid auto-rows-max gap-3">
@@ -114,18 +121,20 @@ const RecentLastOrder = () => {
           <dl className="grid gap-3">
             <div className="flex items-center justify-between">
               <dt className="text-muted-foreground">Customer</dt>
-              <dd>Liam Johnson</dd>
-            </div>
-            <div className="flex items-center justify-between">
-              <dt className="text-muted-foreground">Email</dt>
               <dd>
-                <a href="mailto:">liam@acme.com</a>
+                {result[0]?.user?.first_name + " " + result[0]?.user?.last_name}
               </dd>
             </div>
             <div className="flex items-center justify-between">
               <dt className="text-muted-foreground">Phone</dt>
               <dd>
-                <a href="tel:">+1 234 567 890</a>
+                <a href="tel:">{result[0]?.user?.phone_number}</a>
+              </dd>
+            </div>
+            <div className="flex items-center justify-between gap-5">
+              <dt className="text-muted-foreground">Location</dt>
+              <dd>
+                <a href="mailto:">{result[0]?.user?.location}</a>
               </dd>
             </div>
           </dl>
@@ -137,16 +146,19 @@ const RecentLastOrder = () => {
             <div className="flex items-center justify-between">
               <dt className="flex items-center gap-1 text-muted-foreground">
                 <CreditCard className="h-4 w-4" />
-                Visa
+                Cash
               </dt>
-              <dd>**** **** **** 4532</dd>
+              <dd>{DetermingOrderStatus(result[0]?.status)}</dd>
             </div>
           </dl>
         </div>
       </CardContent>
       <CardFooter className="flex flex-row items-center border-t bg-muted/50 px-6 py-3">
         <div className="text-xs text-muted-foreground">
-          Updated <time dateTime="2023-11-23">November 23, 2023</time>
+          Order
+          <time dateTime={convertToReadableDate(result[0]?.created_at)}>
+            {convertToReadableDate(result[0]?.created_at)}
+          </time>
         </div>
         <Pagination className="ml-auto mr-0 w-auto">
           <PaginationContent>

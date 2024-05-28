@@ -5,7 +5,11 @@ import RecentTransaction from "@/components/dashboard/RecentTransaction";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import RecentLastOrder from "@/components/dashboard/RecentLastOrder";
+<<<<<<< HEAD:app/page.js
 import UnconfirmUSers from "@/components/dashboard/TopSales";
+=======
+import UnConfirmUsers from "@/components/dashboard/TopSales";
+>>>>>>> 33908d9e0f6126025c59082eb7dc2ba947a8d90b:app/(root)/page.js
 
 const Dashboard = () => {
   return (
@@ -21,7 +25,11 @@ const Dashboard = () => {
           <Suspense
             fallback={<Skeleton className="h-[125px] w-[250px] rounded-xl" />}
           >
+<<<<<<< HEAD:app/page.js
             <UnconfirmUSers />
+=======
+            <UnConfirmUsers />
+>>>>>>> 33908d9e0f6126025c59082eb7dc2ba947a8d90b:app/(root)/page.js
           </Suspense>
           <Suspense
             fallback={<Skeleton className="h-[125px] w-[250px] rounded-xl" />}
@@ -50,7 +58,11 @@ const Dashboard = () => {
             <RecentTransaction />
           </Suspense>
 
-          <RecentLastOrder />
+          <Suspense
+            fallback={<Skeleton className="h-[500px] w-[350px] rounded-xl" />}
+          >
+            <RecentLastOrder />
+          </Suspense>
         </div>
       </main>
     </div>
